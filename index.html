@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Refund Status</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 3rem auto; padding: 2rem; background: #f9f9f9; border-radius: 10px; }
+    h2 { color: #333; }
+    p { margin: 8px 0; }
+  </style>
+</head>
+<body>
+  <div id="result">Loading your refund info...</div>
+
+  <script>
+    async function loadStudentData() {
+      const email = new URLSearchParams(window.location.search).get("email");
+      const resultDiv = document.getElementById("result");
+
+      if (!email) {
+        resultDiv.innerHTML = "❌ Please add your email in the URL like this: <code>?email=you@example.com</code>";
+        return;
+      }
+
+      const response = await fetch("https://gsx2json.com/api?id=YOUR_SHEET_ID");
+      const data = await response.json();
+      const student = data.rows.find(row => row.email.toLowerCase() === email.toLowerCase());
+
+      if (!student) {
+        resultDiv.innerHTML = "⚠️ Student not found. Please check your email or contact admin.";
+        return;
+      }
+
+      resultDiv.innerHTML = `
+        <h2>Welcome, ${student.name}</h2>
+        <p><strong>Media Lab:</strong> ₹${student["media lab"]}</p>
+        <p><strong>Library:</strong> ₹${student.library}</p>
+        <p><strong>Student Life:</strong> ₹${student["student life"]}</p>
+        <hr />
+        <p><strong>Total Deposit:</strong> ₹${student["total deposit"]}</p>
+        <p><strong>Total Deductions:</strong> ₹${student["total deductions"]}</p>
+        <p><strong>Refund Amount:</strong> ₹${student.refund} ✅</p>
+      `;
+    }
+
+    loadStudentData();
+  </script>
+</body>
+</html>
