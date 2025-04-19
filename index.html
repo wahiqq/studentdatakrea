@@ -21,8 +21,7 @@
         return;
       }
 
-      const response = await fetch("http://gsx2json.com/api?id=https://docs.google.com/spreadsheets/d/1Sp7fru4uQqtNv-fJziS5gwV1EG7WyYX5Wz-0vaEMBic/edit?usp=sharing&sheet=Sheet1
-");
+      const response = await fetch("https://gsx2json.com/api?id=1Sp7fru4uQqtNv-fJziS5gwV1EG7WyYX5Wz-0vaEMBic");
       const data = await response.json();
       const student = data.rows.find(row => row.email.toLowerCase() === email.toLowerCase());
 
